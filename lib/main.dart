@@ -1,4 +1,5 @@
 import 'package:firstapplicationimmm/controller/FirebaseHelper.dart';
+import 'package:firstapplicationimmm/view/dashboard_main.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -109,6 +110,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
                 onPressed: (){
                   print("Connxion");
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context){
+                        return const DashBoardMain();
+                      }
+                  ));
+                  //FirebaseHelper().connexion(mailController.text, passwordController.text);
 
                 },
                 child : const Text("Connexion")

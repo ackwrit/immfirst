@@ -29,6 +29,11 @@ class FirebaseHelper {
    }
 
 
+   connexion(String mail , String password) async {
+     UserCredential resultat = await auth.signInWithEmailAndPassword(email: mail, password: password);
+   }
+
+
 
 
 
