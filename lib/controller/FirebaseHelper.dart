@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -29,6 +31,9 @@ class FirebaseHelper {
    addUser(String uid , Map<String,dynamic> map){
      cloudUsers.doc(uid).set(map);
    }
+   updateUser(String uid, Map<String,dynamic> map){
+     cloudUsers.doc(uid).update(map);
+   }
 
 
     Future<Utilisateur> connexion(String mail , String password) async {
@@ -43,6 +48,14 @@ class FirebaseHelper {
    Future<Utilisateur> getIdenfiant(String id) async {
      DocumentSnapshot snapshot = await cloudUsers.doc(id).get();
      return Utilisateur.firebase(snapshot);
+
+   }
+
+   //uplodaImage
+  Future<String>uploadImage(String dossier,String name,Uint8List datas) async{
+     TaskSnapshot snapshot = await storage.ref("$dossier/$name").putData(datas);
+     String url = await snapshot.ref.getDownloadURL();
+     return url;
 
    }
 

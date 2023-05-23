@@ -13,7 +13,7 @@ class PermissionHandler {
     else
       {
         PermissionStatus photoAndroid = await Permission.storage.status;
-        checkStatusPhotosAndroid(photoAndroid);
+        checkStatusPhotosIos(photoAndroid);
       }
 
   }
