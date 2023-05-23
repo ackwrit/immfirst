@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firstapplicationimmm/model/Utilisateur.dart';
 
 class FirebaseHelper {
   //attributs
@@ -10,7 +11,7 @@ class FirebaseHelper {
 
 
   //méthodes
-   inscription(String nom, String prenom, String mail, String password) async {
+   Future<Utilisateur>inscription(String nom, String prenom, String mail, String password) async {
      UserCredential resultat = await auth.createUserWithEmailAndPassword(email: mail, password: password);
      String uid = resultat.user!.uid;
      Map<String,dynamic> map = {
@@ -19,6 +20,7 @@ class FirebaseHelper {
        "MAIL":mail
      };
      addUser(uid, map);
+     return getIdenfiant(uid);
 
 
 
@@ -29,9 +31,22 @@ class FirebaseHelper {
    }
 
 
-   connexion(String mail , String password) async {
+    Future<Utilisateur> connexion(String mail , String password) async {
      UserCredential resultat = await auth.signInWithEmailAndPassword(email: mail, password: password);
+    String uid = resultat.user!.uid;
+    return getIdenfiant(uid);
+
+
+
    }
+
+   Future<Utilisateur> getIdenfiant(String id) async {
+     DocumentSnapshot snapshot = await cloudUsers.doc(id).get();
+     return Utilisateur.firebase(snapshot);
+
+   }
+
+
 
 
 

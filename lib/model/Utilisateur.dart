@@ -33,4 +33,8 @@ class Utilisateur {
 
 
   //méthode
+
+  String get fullName {
+    return prenom + " "+ nom;
+  }
 }

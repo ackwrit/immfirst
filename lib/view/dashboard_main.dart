@@ -1,7 +1,10 @@
+import 'package:firstapplicationimmm/view/mon_profil_view.dart';
 import 'package:flutter/material.dart';
 
 class DashBoardMain extends StatefulWidget {
-  const DashBoardMain({Key? key}) : super(key: key);
+  String pass;
+
+  DashBoardMain({Key? key, required this.pass}) : super(key: key);
 
   @override
   State<DashBoardMain> createState() => _DashBoardMainState();
@@ -12,8 +15,14 @@ class _DashBoardMainState extends State<DashBoardMain> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width*0.5,
+        color: Colors.purple,
+        child: const MyProfilView(),
+      ),
       appBar: AppBar(),
-      body: const Text("Je suis dans la nouvelle page"),
+      body: Text("${widget.pass}"),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: index,
         onTap: (value){

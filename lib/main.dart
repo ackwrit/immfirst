@@ -1,4 +1,5 @@
 import 'package:firstapplicationimmm/controller/FirebaseHelper.dart';
+import 'package:firstapplicationimmm/globale.dart';
 import 'package:firstapplicationimmm/view/dashboard_main.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
@@ -98,7 +99,20 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
                 onPressed: (){
                   print("Inscription");
-                  FirebaseHelper().inscription("", "", mailController.text, passwordController.text);
+                  FirebaseHelper().inscription("", "", mailController.text, passwordController.text)
+                      .then((value) {
+                        setState(() {
+                          moi =  value;
+                        });
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context){
+                              return DashBoardMain(pass: "pass");
+                            }
+                        ));
+                  })
+                      .catchError((onError){
+                        print("affihcer popUP");
+                  });
 
                 },
                 child : const Text("Inscription")
@@ -110,12 +124,23 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
                 onPressed: (){
                   print("Connxion");
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context){
-                        return const DashBoardMain();
-                      }
-                  ));
-                  //FirebaseHelper().connexion(mailController.text, passwordController.text);
+
+
+                  FirebaseHelper().connexion(mailController.text, passwordController.text)
+                      .then((value) {
+                        setState(() {
+                          moi = value;
+                        });
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context){
+                              return DashBoardMain(pass: passwordController.text,);
+                            }
+                        ));
+
+                  })
+                      .catchError((onError){
+
+                  });
 
                 },
                 child : const Text("Connexion")
