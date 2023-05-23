@@ -1,12 +1,17 @@
+import 'dart:io';
+
 import 'package:firstapplicationimmm/controller/FirebaseHelper.dart';
+import 'package:firstapplicationimmm/controller/permission_handler.dart';
 import 'package:firstapplicationimmm/globale.dart';
 import 'package:firstapplicationimmm/view/dashboard_main.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  PermissionHandler().start();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -42,8 +47,48 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  //variable
  TextEditingController mailController = TextEditingController();
  TextEditingController passwordController = TextEditingController();
+
+
+ //fonction
+ popUpMessage(){
+   showDialog(
+       context: context,
+       builder: (context){
+         if(Platform.isIOS){
+           return CupertinoAlertDialog(
+             title: const Text("Erreur"),
+             content: const Text("Votre mail/ou mot de passe sont erronées"),
+             actions: [
+               TextButton(
+                   onPressed: (){
+                     Navigator.pop(context);
+                   },
+                   child: const Text("OK")
+               )
+             ],
+           );
+         }
+         else
+           {
+             return AlertDialog(
+               title: const Text("Erreur"),
+               content: const Text("Votre mail/ou mot de passe sont erronées"),
+               actions: [
+                 TextButton(
+                     onPressed: (){
+                       Navigator.pop(context);
+                     },
+                     child: const Text("OK")
+                 )
+               ],
+             );
+           }
+       }
+   );
+ }
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +156,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         ));
                   })
                       .catchError((onError){
-                        print("affihcer popUP");
+
+                        popUpMessage();
                   });
 
                 },
@@ -123,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //Connexion
             ElevatedButton(
                 onPressed: (){
-                  print("Connxion");
+
 
 
                   FirebaseHelper().connexion(mailController.text, passwordController.text)
@@ -139,6 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                   })
                       .catchError((onError){
+                        popUpMessage();
 
                   });
 
