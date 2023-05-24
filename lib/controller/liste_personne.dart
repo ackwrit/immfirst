@@ -39,10 +39,18 @@ class _ListPersonneState extends State<ListPersonne> {
                       ),
                       title: Text(user.fullName),
                       subtitle: Text(user.mail),
-                      trailing: IconButton(
+                      trailing: moi.favoris!.contains(user.id)?const Icon(Icons.favorite,color: Colors.red,):IconButton(
                         icon: const Icon(Icons.favorite_border),
                         onPressed: (){
-                          print("coucou");
+                          setState(() {
+                            moi.favoris!.add(user.id);
+                            Map<String,dynamic> map = {
+                              "FAVORIS":moi.favoris
+                            };
+                            FirebaseHelper().updateUser(moi.id, map);
+                          });
+
+
                         },
                       ),
                     ),

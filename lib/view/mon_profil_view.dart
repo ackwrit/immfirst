@@ -50,6 +50,7 @@ class _MyProfilViewState extends State<MyProfilView> {
     );
   }
   ImagePopUp()async{
+
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.image,
       withData: true

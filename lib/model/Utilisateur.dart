@@ -8,6 +8,7 @@ class Utilisateur {
   String? pseudo;
   late String mail;
   String? avatar;
+  List? favoris;
 
 
   //contsructeurs
@@ -16,6 +17,7 @@ class Utilisateur {
     nom= "";
     prenom ="";
     mail = "";
+    favoris = [];
   }
 
   Utilisateur.firebase(DocumentSnapshot snapshot){
@@ -26,6 +28,15 @@ class Utilisateur {
     pseudo = map["PSEUDO"];
     mail = map["MAIL"];
     avatar = map["AVATAR"];
+    List? tempo = map["FAVORIS"];
+    if(tempo == null){
+      favoris = [];
+    }
+    else {
+      favoris = tempo;
+    }
+
+
 
   }
 
