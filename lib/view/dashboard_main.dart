@@ -1,3 +1,5 @@
+import 'package:firstapplicationimmm/controller/liste_favoris.dart';
+import 'package:firstapplicationimmm/controller/liste_personne.dart';
 import 'package:firstapplicationimmm/view/mon_profil_view.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +14,7 @@ class DashBoardMain extends StatefulWidget {
 
 class _DashBoardMainState extends State<DashBoardMain> {
   int index = 0;
+  PageController pageController = PageController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,12 +25,24 @@ class _DashBoardMainState extends State<DashBoardMain> {
         child: const MyProfilView(),
       ),
       appBar: AppBar(),
-      body: Text("${widget.pass}"),
+      body: PageView(
+        controller: pageController,
+        onPageChanged: (value){
+          setState(() {
+            index = value;
+          });
+        },
+        children: [
+          ListPersonne(),
+          ListFavoris(),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: index,
         onTap: (value){
           setState(() {
             index = value;
+            pageController.animateToPage(index, duration: const Duration(milliseconds: 500), curve: Curves.linear);
           });
 
         },
