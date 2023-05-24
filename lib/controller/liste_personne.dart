@@ -28,33 +28,39 @@ class _ListPersonneState extends State<ListPersonne> {
                 itemCount: documents.length,
                 itemBuilder: (context,index){
                   Utilisateur user = Utilisateur.firebase(documents[index]);
-                  return Card(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                    elevation: 5.0,
-                    color: Colors.purple,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 40,
-                        backgroundImage: NetworkImage(user.avatar ?? imageDefault),
+                  if(moi.id == user.id){
+                    return Container();
+                  }
+                  else {
+                    return Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      elevation: 5.0,
+                      color: Colors.purple,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 40,
+                          backgroundImage: NetworkImage(
+                              user.avatar ?? imageDefault),
+                        ),
+                        title: Text(user.fullName),
+                        subtitle: Text(user.mail),
+                        trailing: moi.favoris!.contains(user.id) ? const Icon(
+                          Icons.favorite, color: Colors.red,) : IconButton(
+                          icon: const Icon(Icons.favorite_border),
+                          onPressed: () {
+                            setState(() {
+                              moi.favoris!.add(user.id);
+                              Map<String, dynamic> map = {
+                                "FAVORIS": moi.favoris
+                              };
+                              FirebaseHelper().updateUser(moi.id, map);
+                            });
+                          },
+                        ),
                       ),
-                      title: Text(user.fullName),
-                      subtitle: Text(user.mail),
-                      trailing: moi.favoris!.contains(user.id)?const Icon(Icons.favorite,color: Colors.red,):IconButton(
-                        icon: const Icon(Icons.favorite_border),
-                        onPressed: (){
-                          setState(() {
-                            moi.favoris!.add(user.id);
-                            Map<String,dynamic> map = {
-                              "FAVORIS":moi.favoris
-                            };
-                            FirebaseHelper().updateUser(moi.id, map);
-                          });
-
-
-                        },
-                      ),
-                    ),
-                  );
+                    );
+                  }
                 },
 
               );
